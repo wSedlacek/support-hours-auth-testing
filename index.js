@@ -1,10 +1,10 @@
 // @ts-check
 
 const express = require('express');
-
+const dotenv = require('dotenv');
 const helmet = require('helmet');
 const cors = require('cors');
-
+dotenv.config()
 const app = express();
 
 const authRouter = require('./routes/auth.routes');
