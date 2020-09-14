@@ -2,7 +2,7 @@
 
 const express = require("express");
 const bcrypt = require("bcrypt");
-const JWT = require('jsonwebtoken');
+const JWT = require("jsonwebtoken");
 const userDB = require("../models/user.model");
 
 const router = express.Router();
@@ -39,21 +39,31 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {//checking if username and password is valid
-    return res
-      .status(400)
-      .json({ message: "We require username and password on the body" });
-  }
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      //checking if username and password is valid
+      return res
+        .status(400)
+        .json({ message: "We require username and password on the body" });
+    }
 
-  const user = await userDB.findByUsername(username);
-  const validPassword = bcrypt.compareSync(password, user.password);
-  if (!validPassword) { //validating password
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-const token = JWT.sign(user.id, process.env.SECRET)
+    const user = await userDB.findByUsername(username);
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (!validPassword) {
+      //validating password
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = JWT.sign(user.id, process.env.SECRET);
 
-  res.json({});
+    res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      errorMessage:
+        "Something went horribly horribly wrong. You should not do that again...",
+    });
+  }
 });
 
 module.exports = router;
