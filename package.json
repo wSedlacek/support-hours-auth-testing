@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.13",
     "@types/supertest": "^2.0.10",
-    "cross-env": "0.0.2-security",
+    "cross-env": "^7.0.2",
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
